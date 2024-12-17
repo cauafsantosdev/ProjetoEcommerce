@@ -1,0 +1,15 @@
+1. O sistema deve possuir uma lista de pessoas e setores.
+
+2. Sistema para cadastro de uma nova prospecção (contato) com a empresa.
+
+3. Envio desse contato para o setor de elaboração de proposta técnica.
+
+4. Gera modelo de proposta técnica, cadastra informações do projeto.
+
+5. Envia para o setor financeiro.
+
+6. Gerar orçamento.
+
+7. Gerar documento final da proposta de projeto.
+
+8. Gerar lista de cadastros e status.
