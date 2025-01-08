@@ -82,26 +82,27 @@ class Application:
         self.inventory_system.list_inventory()
 
 
-# Simulação do sistema
-inventory_system = Inventory()
+if __name__ == "__main__":
+    # Simulação do sistema
+    inventory_system = Inventory()
 
-# Carregar estoque existente
-inventory_system.load_inventory_csv()
+    # Carregar estoque existente
+    inventory_system.load_inventory_csv()
 
-# Adicionar produtos ao estoque
-inventory_system.add_product("Camiseta", 50)
-inventory_system.add_product("Calça Jeans", 30)
+    # Adicionar produtos ao estoque
+    inventory_system.add_product("Camiseta", 50)
+    inventory_system.add_product("Calça Jeans", 30)
 
-# Criar aplicação
-app = Application(inventory_system)
+    # Criar aplicação
+    app = Application(inventory_system)
 
-# Mostrar estoque inicial
-app.show_inventory()
+    # Mostrar estoque inicial
+    app.show_inventory()
 
-# Realizar compras
-app.purchase("Camiseta", 5)
-app.purchase("Calça Jeans", 10)
-app.purchase("Tênis", 2)
+    # Realizar compras
+    app.purchase("Camiseta", 5)
+    app.purchase("Calça Jeans", 10)
+    app.purchase("Tênis", 2)
 
-# Mostrar estoque atualizado
-app.show_inventory()
+    # Mostrar estoque atualizado
+    app.show_inventory()
