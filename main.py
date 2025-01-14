@@ -11,6 +11,7 @@ class Inventory:
     def __init__(self):
         self.inventory = []
 
+
     # Carregar estoque a partir de um arquivo CSV
     def load_inventory_csv(self):
         try:
@@ -21,6 +22,7 @@ class Inventory:
         except FileNotFoundError:
             print("Arquivo de estoque não encontrado. Criando um novo estoque vazio.")
 
+
     # Salvar estoque no arquivo CSV
     def save_inventory_csv(self):
         with open('inventory.csv', mode='w', newline='') as file:
@@ -28,6 +30,7 @@ class Inventory:
             writer.writerow(["Name", "Quantity"])
             for product in self.inventory:
                 writer.writerow([product.name, product.quantity])
+
 
     # Adicionar um novo produto ou atualizar a quantidade de um existente
     def add_product(self, name, quantity):
@@ -40,10 +43,12 @@ class Inventory:
         self.inventory.append(new_product)
         self.save_inventory_csv()
 
+
     # Gerar lista de estoque
     def list_inventory(self):
         for product in self.inventory:
             print(f"Produto: {product.name}, Quantidade: {product.quantity}")
+
 
     # Verificar quantidade de um produto específico
     def check_product_quantity(self, name):
@@ -52,6 +57,7 @@ class Inventory:
                 print(f"Quantidade de {name}: {product.quantity}")
                 return
         print(f"Produto {name} não encontrado no estoque.")
+
 
     # Reduzir a quantidade de um produto após uma compra
     def reduce_product_quantity(self, name, quantity):
@@ -71,10 +77,12 @@ class Application:
     def __init__(self, inventory_system):
         self.inventory_system = inventory_system
 
+
     # Simular compras realizadas por um usuário
     def purchase(self, product_name, quantity):
         print(f"Tentando comprar {quantity} unidade(s) de {product_name}...")
         self.inventory_system.reduce_product_quantity(product_name, quantity)
+
 
     # Mostrar o estoque para o usuário
     def show_inventory(self):
