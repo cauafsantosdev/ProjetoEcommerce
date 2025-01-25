@@ -46,9 +46,14 @@ class Inventory:
 
     # Gerar lista de estoque
     def list_inventory(self):
+        products = []
         for product in self.inventory:
-            print(f"Produto: {product.name}, Quantidade: {product.quantity}")
-
+            if product.quantity > 0:
+                linha = f"{product.name:°<25}{product.quantity:>5}un"
+                print(len(linha))
+                products.append(linha.ljust(50))
+        
+        return products
 
     # Verificar quantidade de um produto específico
     def check_product_quantity(self, name):
@@ -73,6 +78,10 @@ class Inventory:
         print(f"Produto {name} não encontrado no estoque.")
 
 
+    # Obter o tamanho do estoque
+    def get_inventory_size(self):
+        return len(self.inventory)
+
 class Application:
     def __init__(self, inventory_system):
         self.inventory_system = inventory_system
@@ -86,8 +95,7 @@ class Application:
 
     # Mostrar o estoque para o usuário
     def show_inventory(self):
-        print("\nEstoque atual:")
-        self.inventory_system.list_inventory()
+        return self.inventory_system.list_inventory()
 
 
 if __name__ == "__main__":
