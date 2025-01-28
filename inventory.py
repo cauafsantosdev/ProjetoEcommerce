@@ -1,5 +1,14 @@
 import csv
 import pandas as pd
+import importlib
+
+try:
+    import pandas as pd
+except ImportError:
+    import subprocess
+    print("Instalando biblioteca pandas...")
+    subprocess.run(["pip", "install", "pandas"])
+    importlib.reload(pd)
 
 class Product:
     def __init__(self, product_id, name, quantity, price):
@@ -15,7 +24,6 @@ class Inventory:
     # Carregar estoque a partir de um arquivo CSV
     def load_inventory_csv(self):
         inventory = pd.read_csv("inventory.csv", sep=";", skiprows=1, header=None)
-        print(inventory.head())
         for _, row in inventory.iterrows():
             self.inventory.append(Product(int(row[0]), row[1], int(row[2]), float(row[3])))
 
