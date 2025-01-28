@@ -1,9 +1,0 @@
-1. O sistema deve ler um CSV de estoque
-
-2. Atualizar o estoque cadastrando novas peças
-
-3. Gerar uma lista de estoque ao usuário
-
-4. Verificar quantos itens de determinado produto tem no estoque
-
-5. Reduzir item do estoque quando lançada compra

@@ -1,4 +1,5 @@
 import csv
+import pandas as pd
 
 class Product:
     def __init__(self, product_id, name, quantity, price):
@@ -13,17 +14,10 @@ class Inventory:
 
     # Carregar estoque a partir de um arquivo CSV
     def load_inventory_csv(self):
-        try:
-            with open('inventory.csv', mode='r') as file:
-                reader = csv.DictReader(file, delimiter=';')
-                if 'ID' not in reader.fieldnames or 'Product' not in reader.fieldnames or 'Quantity' not in reader.fieldnames or 'Price' not in reader.fieldnames:
-                    raise ValueError("CSV deve conter as colunas 'ID', 'Product', 'Quantity' e 'Price'.")
-                for row in reader:
-                    self.inventory.append(Product(int(row['ID']), row['Product'], int(row['Quantity']), float(row['Price'])))
-        except FileNotFoundError:
-            print("Arquivo de estoque não encontrado. Criando um novo estoque vazio.")
-        except ValueError as e:
-            print(f"Erro no arquivo CSV: {e}")
+        inventory = pd.read_csv("inventory.csv", sep=";", skiprows=1, header=None)
+        print(inventory.head())
+        for _, row in inventory.iterrows():
+            self.inventory.append(Product(int(row[0]), row[1], int(row[2]), float(row[3])))
 
     # Salvar estoque no arquivo CSV
     def save_inventory_csv(self):
@@ -46,12 +40,19 @@ class Inventory:
         self.save_inventory_csv()
 
     # Remover produto do estoque
-    def remove_product(self, name):
-        self.inventory = [product for product in self.inventory if product.name != name]
+    def remove_product(self, product_id):
+        self.inventory = [product for product in self.inventory if product.product_id != product_id]
         # Reorganizar IDs
         for idx, product in enumerate(self.inventory):
             product.product_id = idx + 1
         self.save_inventory_csv()
+
+    # Altera o produto
+    def change_product(self, product_id: int, quantity: int, price: float):
+        for product in self.inventory:
+            if product.product_id == product_id:
+                product.quantity = quantity
+                product.price = price
 
     # Gerar lista de estoque formatada
     def list_inventory(self):
@@ -65,9 +66,19 @@ class Inventory:
     def get_inventory_size(self):
         return len(self.inventory)
 
+    # Processar compra
+    def buy_product(self, product_id: int, quantity: int):
+        for product in self.inventory:
+            if product.product_id == product_id:
+                if product.quantity < quantity:
+                    return False
+                else:
+                    product.quantity -= quantity
+                    self.save_inventory_csv()
+                    return True
+    
+
 if __name__ == "__main__":
     inventory = Inventory()
     inventory.load_inventory_csv()
-    inventory.add_product("Produto1", 10, 5.50)
-    inventory.add_product("Produto2", 20, 10.00)
-    print(inventory.list_inventory())
+    print(inventory.search_product(3))

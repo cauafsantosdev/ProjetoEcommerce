@@ -21,17 +21,22 @@ background = graphics.Image(graphics.Point(600, 400), "graphic elements/admin.pp
 background.draw(win)
 
 # Definições de layout
-table_start_x, table_start_y = 150, 200
+table_start_x, table_start_y = 527, 79
 row_height, col_width = 30, 300
-max_rows = 10  # Número máximo de linhas visíveis na tabela
+max_rows = 23  # Número máximo de linhas visíveis na tabela
 
 # Função para desenhar a tabela e os itens do estoque
 
-def draw_table():
-    win.delete("all")
-    background.draw(win)
+drawn_elements = []
 
-    # Linhas da tabela
+def draw_table():
+    global drawn_elements
+    # Apagar elementos existentes
+    for element in drawn_elements:
+        element.undraw()
+    drawn_elements = []  # Limpar a lista de elementos
+
+    # Redesenhar apenas a área da tabela sem apagar inputs e botões
     items = inventory_system.list_inventory()
     for row_idx in range(max_rows):
         y = table_start_y + row_idx * row_height
@@ -40,23 +45,36 @@ def draw_table():
 
             # Desenhar ID
             id_text = graphics.Text(graphics.Point(table_start_x + 50, y + row_height / 2), item_data[0])
-            id_text.setSize(12)
+            id_text.setSize(14)
+            id_text.setStyle("bold")
+            id_text.setTextColor("white")
             id_text.draw(win)
+            drawn_elements.append(id_text)
 
             # Desenhar Nome
-            name_text = graphics.Text(graphics.Point(table_start_x + 200, y + row_height / 2), item_data[1])
-            name_text.setSize(12)
+            name_text = graphics.Text(graphics.Point(table_start_x + 260, y + row_height / 2), item_data[1])
+            name_text.setSize(14)
+            name_text.setStyle("bold")
+            name_text.setTextColor("white")
             name_text.draw(win)
+            drawn_elements.append(name_text)
 
             # Desenhar Quantidade
-            quantity_text = graphics.Text(graphics.Point(table_start_x + 450, y + row_height / 2), item_data[2])
-            quantity_text.setSize(12)
+            quantity_text = graphics.Text(graphics.Point(table_start_x + 454, y + row_height / 2), item_data[2])
+            quantity_text.setSize(14)
+            quantity_text.setStyle("bold")
+            quantity_text.setTextColor("white")
             quantity_text.draw(win)
+            drawn_elements.append(quantity_text)
 
             # Desenhar Valor
-            value_text = graphics.Text(graphics.Point(table_start_x + 700, y + row_height / 2), item_data[3])
-            value_text.setSize(12)
+            value_text = graphics.Text(graphics.Point(table_start_x + 534, y + row_height / 2), f"R${item_data[3]}")
+            value_text.setSize(14)
+            value_text.setStyle("bold")
+            value_text.setTextColor("white")
             value_text.draw(win)
+            drawn_elements.append(value_text)
+
 
 # Funções para lidar com ações de adicionar, alterar e remover
 
@@ -65,8 +83,12 @@ def add_product(name, quantity, price):
     draw_table()
 
 
-def remove_product(name):
-    inventory_system.remove_product(name)
+def remove_product(product_id):
+    inventory_system.remove_product(product_id)
+    draw_table()
+
+def change_product(product_id, quantity, price):
+    inventory_system.change_product(product_id, quantity, price)
     draw_table()
 
 # Inputs para os campos
@@ -96,13 +118,20 @@ def clear_inputs():
     name_add_input.setText("")
     quantity_add_input.setText("")
     price_add_input.setText("")
+    id_change_input.setText("")
+    quantity_change_input.setText("")
+    price_change_input.setText("")
+    id_remove_input.setText("")
+
+draw_table()
 
 # Loop principal para capturar cliques
 while True:
     click = win.getMouse()
 
     # Verificar se clicou no botão "Adicionar"
-    if (700 <= click.x <= 800) and (500 <= click.y <= 550):  # Coordenadas do botão de adicionar na imagem
+    if (132 <= click.x <= 375) and (368 <= click.y <= 414):  # Coordenadas do botão de adicionar produto
+        print("clicou")
         name = name_add_input.getText()
         quantity = quantity_add_input.getText()
         price = price_add_input.getText()
@@ -110,22 +139,23 @@ while True:
             add_product(name, int(quantity), float(price))
             clear_inputs()
 
-    # Verificar se clicou no botão "Remover"
-    if (700 <= click.x <= 800) and (550 <= click.y <= 600):  # Coordenadas do botão de remover na imagem
-        name = name_add_input.getText()
-        if name:
-            remove_product(name)
-            clear_inputs()
-
     # Verificar se clicou no botão "Alterar"
-    if (700 <= click.x <= 800) and (600 <= click.y <= 650):  # Coordenadas do botão de alterar na imagem
-        name = name_add_input.getText()
-        quantity = quantity_add_input.getText()
-        price = price_add_input.getText()
-        if name and quantity.isdigit() and price.replace('.', '', 1).isdigit():
-            remove_product(name)  # Remover o produto antigo
-            add_product(name, int(quantity), float(price))  # Adicionar com os novos valores
+    if (132 <= click.x <= 375) and (550 <= click.y <= 595):  # Coordenadas do botão de alterar produto
+        print("clicou")
+        product_id = id_change_input.getText()
+        quantity = quantity_change_input.getText()
+        price = price_change_input.getText()
+        if product_id and quantity.isdigit() and price.replace('.', '', 1).isdigit():
+            change_product(int(product_id), int(quantity), float(price))  # Adicionar com os novos valores
             clear_inputs()
 
-# Desenhar a tabela inicial
-draw_table()
+    # Verificar se clicou no botão "Remover"
+    if (132 <= click.x <= 375) and (710 <= click.y <= 755):  # Coordenadas do botão de remover produto
+        product_id = id_remove_input.getText()
+        if product_id:
+            remove_product(int(product_id))
+            clear_inputs()
+
+    # Sair do programa
+    if (1138 <= click.x <= 1188) and (5 <= click.y <= 30):
+        win.close()
