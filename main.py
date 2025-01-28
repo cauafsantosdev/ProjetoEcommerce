@@ -1,8 +1,8 @@
 senha = '1234'
 
-print('Login'
-      '1 - Comprar'
-      '2 - ADMIN'
+print('''Login
+1 - Comprar
+2 - ADMIN'''
 )
 
 if input() == '1':
