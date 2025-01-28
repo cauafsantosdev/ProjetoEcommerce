@@ -1,6 +1,4 @@
-Name,Quantity
-Camiseta,235
-Tenis,18
-Bone,15
-Cal�a Jeans,80
-Calça Jeans,20
+ID;Product;Quantity;Price
+1;Mouse;10;20
+2;Keyboard;15;30
+3;Monitor;10;50
