@@ -12,12 +12,17 @@ while True:
         with open('user.py', 'r') as file:
             codigo = file.readlines()
             exec(''.join(codigo))
-    elif choice == 2:
-        if input('Senha: ') == senha:
-            with open('admin.py', 'r') as file:
-                codigo = file.readlines()
-                exec(''.join(codigo))
+    elif choice == '2':
+        for _ in range(3):
+            input_senha = input('Senha: ')
+            if input_senha == senha:
+                with open('admin.py', 'r') as file:
+                    codigo = file.readlines()
+                    exec(''.join(codigo))
+            else:
+                print('Senha incorreta')
         else:
-            print('Senha incorreta')
+            print("Acesso negado!")
+            quit()
     else:
         print("Opção inválida!")
