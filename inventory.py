@@ -3,7 +3,7 @@ import importlib
 
 try:
     import pandas as pd
-except ImportError:
+except ImportError or ModuleNotFoundError:
     import subprocess
     print("Instalando biblioteca pandas...")
     subprocess.run(["pip", "install", "pandas"])
