@@ -74,6 +74,8 @@ class Inventory:
                     return False
                 else:
                     product.quantity -= quantity
+                    if product.quantity == 0:
+                        self.remove_product(product.product_id)
                     self.save_inventory_csv()
                     return True
     
