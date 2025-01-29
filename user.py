@@ -76,7 +76,7 @@ def draw_table():
             drawn_elements.append(value_text)
 
 # Função para compra
-def buy_product(product_id, quantity):
+def buy_product(product_id: int, quantity: int):
     if inventory_system.buy_product(product_id, quantity):
         draw_table()
     else:

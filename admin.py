@@ -75,17 +75,17 @@ def draw_table():
             drawn_elements.append(value_text)
 
 # Função para adicionar produto ao estoque
-def add_product(name, quantity, price):
+def add_product(name: str, quantity: int, price: float):
     inventory_system.add_product(name, quantity, price)
     draw_table()
 
 # Função para remover produto do estoque
-def remove_product(product_id):
+def remove_product(product_id: int):
     inventory_system.remove_product(product_id)
     draw_table()
 
 # Função para alterar produto
-def change_product(product_id, quantity, price):
+def change_product(product_id: int, quantity: int, price: float):
     inventory_system.change_product(product_id, quantity, price)
     draw_table()
 
