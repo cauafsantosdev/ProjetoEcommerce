@@ -10,12 +10,14 @@ except ImportError:
     subprocess.run(["pip", "install", "pandas"])
     importlib.reload(pd)
 
+
 class Product:
-    def __init__(self, product_id, name, quantity, price):
+    def __init__(self, product_id: int, name: str, quantity: int, price: float):
         self.product_id = product_id
         self.name = name
         self.quantity = quantity
         self.price = price
+
 
 class Inventory:
     def __init__(self):
@@ -35,27 +37,22 @@ class Inventory:
             for product in self.inventory:
                 writer.writerow([product.product_id, product.name, product.quantity, product.price])
 
-    # Adicionar um novo produto ou atualizar a quantidade de um existente
-    def add_product(self, name, quantity, price):
-        for product in self.inventory:
-            if product.name == name:
-                product.quantity += quantity
-                self.save_inventory_csv()
-                return
+    # Adicionar um novo produto ao estoque
+    def add_product(self, name: str, quantity: int, price: float):
         new_id = max([product.product_id for product in self.inventory], default=0) + 1
         new_product = Product(new_id, name, quantity, price)
         self.inventory.append(new_product)
         self.save_inventory_csv()
 
     # Remover produto do estoque
-    def remove_product(self, product_id):
+    def remove_product(self, product_id: int):
         self.inventory = [product for product in self.inventory if product.product_id != product_id]
         # Reorganizar IDs
         for idx, product in enumerate(self.inventory):
             product.product_id = idx + 1
         self.save_inventory_csv()
 
-    # Altera o produto
+    # Alterar produto do estoque
     def change_product(self, product_id: int, quantity: int, price: float):
         for product in self.inventory:
             if product.product_id == product_id:
@@ -69,10 +66,6 @@ class Inventory:
             linha = f"{product.product_id};{product.name};{product.quantity};{product.price:.2f}"
             products.append(linha)
         return products
-
-    # Obter o tamanho do estoque
-    def get_inventory_size(self):
-        return len(self.inventory)
 
     # Processar compra
     def buy_product(self, product_id: int, quantity: int):
@@ -89,4 +82,7 @@ class Inventory:
 if __name__ == "__main__":
     inventory = Inventory()
     inventory.load_inventory_csv()
-    print(inventory.search_product(3))
+    products = inventory.list_inventory()
+
+    for product in products:
+        print(product)

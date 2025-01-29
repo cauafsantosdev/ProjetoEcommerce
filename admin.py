@@ -15,28 +15,27 @@ except ImportError or ModuleNotFoundError:
 inventory_system = Inventory()
 inventory_system.load_inventory_csv()
 
-# Configuração inicial
+# Inicializa a janela
 win = graphics.GraphWin("World Tech Center", 1200, 800)
 background = graphics.Image(graphics.Point(600, 400), "graphic elements/admin.ppm")
 background.draw(win)
 
-# Definições de layout
+# Definições da tabela de estoque
 table_start_x, table_start_y = 527, 79
 row_height, col_width = 30, 300
-max_rows = 23  # Número máximo de linhas visíveis na tabela
+max_rows = 23  # Número máximo de linhas possíveis na tabela
 
 # Função para desenhar a tabela e os itens do estoque
-
 drawn_elements = []
 
 def draw_table():
     global drawn_elements
-    # Apagar elementos existentes
-    for element in drawn_elements:
+    
+    for element in drawn_elements: # Apagar elementos existentes
         element.undraw()
     drawn_elements = []  # Limpar a lista de elementos
 
-    # Redesenhar apenas a área da tabela sem apagar inputs e botões
+    # Redesenhar os itens
     items = inventory_system.list_inventory()
     for row_idx in range(max_rows):
         y = table_start_y + row_idx * row_height
@@ -75,23 +74,22 @@ def draw_table():
             value_text.draw(win)
             drawn_elements.append(value_text)
 
-
-# Funções para lidar com ações de adicionar, alterar e remover
-
+# Função para adicionar produto ao estoque
 def add_product(name, quantity, price):
     inventory_system.add_product(name, quantity, price)
     draw_table()
 
-
+# Função para remover produto do estoque
 def remove_product(product_id):
     inventory_system.remove_product(product_id)
     draw_table()
 
+# Função para alterar produto
 def change_product(product_id, quantity, price):
     inventory_system.change_product(product_id, quantity, price)
     draw_table()
 
-# Inputs para os campos
+# Inputs para adicionar produto
 name_add_input = graphics.Entry(graphics.Point(101, 325), 20)
 name_add_input.draw(win)
 
@@ -101,6 +99,7 @@ quantity_add_input.draw(win)
 price_add_input = graphics.Entry(graphics.Point(386, 325), 10)
 price_add_input.draw(win)
 
+# Inputs para alterar produto
 id_change_input = graphics.Entry(graphics.Point(101, 505), 10)
 id_change_input.draw(win)
 
@@ -110,6 +109,7 @@ quantity_change_input.draw(win)
 price_change_input = graphics.Entry(graphics.Point(386, 505), 10)
 price_change_input.draw(win)
 
+# Input para remover produto
 id_remove_input = graphics.Entry(graphics.Point(255, 677), 10)
 id_remove_input.draw(win)
 
@@ -123,6 +123,7 @@ def clear_inputs():
     price_change_input.setText("")
     id_remove_input.setText("")
 
+# Desenha a tabela de estoque ao inicializar o programa
 draw_table()
 
 # Loop principal para capturar cliques
@@ -131,7 +132,6 @@ while True:
 
     # Verificar se clicou no botão "Adicionar"
     if (132 <= click.x <= 375) and (368 <= click.y <= 414):  # Coordenadas do botão de adicionar produto
-        print("clicou")
         name = name_add_input.getText()
         quantity = quantity_add_input.getText()
         price = price_add_input.getText()
@@ -141,12 +141,11 @@ while True:
 
     # Verificar se clicou no botão "Alterar"
     if (132 <= click.x <= 375) and (550 <= click.y <= 595):  # Coordenadas do botão de alterar produto
-        print("clicou")
         product_id = id_change_input.getText()
         quantity = quantity_change_input.getText()
         price = price_change_input.getText()
         if product_id and quantity.isdigit() and price.replace('.', '', 1).isdigit():
-            change_product(int(product_id), int(quantity), float(price))  # Adicionar com os novos valores
+            change_product(int(product_id), int(quantity), float(price))
             clear_inputs()
 
     # Verificar se clicou no botão "Remover"

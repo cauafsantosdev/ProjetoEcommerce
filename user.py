@@ -11,30 +11,30 @@ except ImportError or ModuleNotFoundError:
     time.sleep(5)
     importlib.reload(graphics)
     
-    
+
+# Inicializa o sistema de estoque    
 inventory_system = Inventory()
 inventory_system.load_inventory_csv()
 
-# Configuração inicial
+# Inicializa a janela
 win = graphics.GraphWin("World Tech Center", 1200, 800)
 background = graphics.Image(graphics.Point(600, 400), "graphic elements/user.ppm")
 background.draw(win)
 
-# Definições de layout
+# Definições de layout da tabela de estoque
 table_start_x, table_start_y = 43, 73
 row_height, col_width = 30, 300
-max_rows = 23  # Número máximo de linhas visíveis na tabela
+max_rows = 23  # Número máximo de linhas possíveis na tabela
 
 # Função para desenhar a tabela e os itens do estoque
-
 drawn_elements = []
 
 def draw_table():
     global drawn_elements
-    # Apagar elementos existentes
-    for element in drawn_elements:
+    
+    for element in drawn_elements: # Apagar elementos existentes
         element.undraw()
-    drawn_elements = []  # Limpar a lista de elementos
+    drawn_elements = []  # Reseta a lista de elementos
 
     # Redesenhar os itens
     items = inventory_system.list_inventory()
@@ -75,8 +75,7 @@ def draw_table():
             value_text.draw(win)
             drawn_elements.append(value_text)
 
-# Funções para lidar com ações de adicionar, alterar e remover
-
+# Função para compra
 def buy_product(product_id, quantity):
     if inventory_system.buy_product(product_id, quantity):
         draw_table()
@@ -101,6 +100,7 @@ def clear_inputs():
     id_input.setText("")
     quantity_input.setText("")
 
+# Desenha a tabela de estoque ao inicializar o programa
 draw_table()
 
 # Loop principal para capturar cliques
@@ -109,7 +109,6 @@ while True:
 
     # Verificar se clicou no botão "Comprar"
     if (824 <= click.x <= 1026) and (538 <= click.y <= 596):  # Coordenadas do botão de compra
-        print("clicou")
         product_id = id_input.getText()
         quantity = quantity_input.getText()
         if product_id and quantity.isdigit():
