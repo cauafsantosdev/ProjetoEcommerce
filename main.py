@@ -5,14 +5,19 @@ print('''Login
 2 - ADMIN'''
 )
 
-if input() == '1':
-    with open('user.py', 'r') as file:
-        codigo = file.readlines()
-        exec(''.join(codigo))
-else:
-    if input('Senha: ') == senha:
-        with open('admin.py', 'r') as file:
+while True:
+    choice = input()
+
+    if choice == '1':
+        with open('user.py', 'r') as file:
             codigo = file.readlines()
             exec(''.join(codigo))
+    elif choice == 2:
+        if input('Senha: ') == senha:
+            with open('admin.py', 'r') as file:
+                codigo = file.readlines()
+                exec(''.join(codigo))
+        else:
+            print('Senha incorreta')
     else:
-        print('Senha incorreta')
+        print("Opção inválida!")
